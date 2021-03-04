@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { DiagramComponent } from '@syncfusion/ej2-angular-diagrams';
 import {
   Diagram,
   NodeModel,
