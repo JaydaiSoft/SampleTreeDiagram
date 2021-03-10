@@ -46,8 +46,8 @@ export class AppComponent{
 
   public connDefaults(connector: ConnectorModel): void {
     connector.type = 'Orthogonal';
-    connector.style.strokeColor = '#4d4d4d';
-    connector.targetDecorator.shape = 'None';
+    // connector.style.strokeColor = '#4d4d4d';
+    // connector.targetDecorator.shape = 'None';
   };
 
   public tool: DiagramTools = DiagramTools.ZoomPan;
