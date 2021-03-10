@@ -1,15 +1,8 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { DiagramComponent } from '@syncfusion/ej2-angular-diagrams';
+import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
 import {
-  Diagram,
-  NodeModel,
-  ConnectorModel,
-  SnapConstraints,
-  SnapSettingsModel,
-  DataBinding,
-  HierarchicalTree,
-  DiagramTools,
-} from '@syncfusion/ej2-diagrams';
+  Diagram, NodeModel, ConnectorModel, SnapConstraints, SnapSettingsModel,
+  DataBinding, HierarchicalTree, DiagramTools
+} from '@syncfusion/ej2-angular-diagrams';
 import { DataManager } from '@syncfusion/ej2-data';
 import * as Data from './diagram-data.json';
 
@@ -23,9 +16,9 @@ Diagram.Inject(DataBinding, HierarchicalTree);
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
-  title = 'SampleTreeDiagram';
+export class AppComponent{
 
   public nodeDefaults(node: NodeModel): NodeModel {
     let obj: NodeModel = {};
@@ -34,43 +27,34 @@ export class AppComponent {
     obj.width = 95;
     obj.height = 30;
     return obj;
-  }
+  };
+
   public data: Object = {
-    id: 'Name',
-    parentId: 'Category',
-    dataSource: new DataManager((Data as any).species),
+    id: 'Name', parentId: 'Category', dataSource: new DataManager((Data as any).species),
     //binds the external data with node
     doBinding: (nodeModel: NodeModel, data: DataInfo, diagram: Diagram) => {
-      nodeModel.annotations = [
-        {
-          /* tslint:disable:no-string-literal */
-          content: data['Name'],
-          style: { color: 'black' },
-        },
+      nodeModel.annotations = [{
+        /* tslint:disable:no-string-literal */
+        content: data['Name'],
+        style: { color: 'black' }
+      }
       ];
       /* tslint:disable:no-string-literal */
-      nodeModel.style = {
-        fill: '#ffeec7',
-        strokeColor: '#f5d897',
-        strokeWidth: 1,
-      };
-    },
+      nodeModel.style = { fill: '#ffeec7', strokeColor: '#f5d897', strokeWidth: 1 };
+    }
   };
 
   public connDefaults(connector: ConnectorModel): void {
     connector.type = 'Orthogonal';
-    // connector.style.strokeColor = '#4d4d4d';
-    // connector.targetDecorator.shape = 'None';
-  }
+    connector.style.strokeColor = '#4d4d4d';
+    connector.targetDecorator.shape = 'None';
+  };
 
   public tool: DiagramTools = DiagramTools.ZoomPan;
-  public snapSettings: SnapSettingsModel = {
-    constraints: SnapConstraints.None,
-  };
+  public snapSettings: SnapSettingsModel = { constraints: SnapConstraints.None };
   public layout: Object = {
-    type: 'HierarchicalTree',
-    horizontalSpacing: 40,
-    verticalSpacing: 40,
-    margin: { top: 10, left: 10, right: 10, bottom: 0 },
+    type: 'HierarchicalTree', horizontalSpacing: 40, verticalSpacing: 40,
+    margin: { top: 10, left: 10, right: 10, bottom: 0 }
   };
 }
+
