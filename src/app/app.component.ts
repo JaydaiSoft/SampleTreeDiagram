@@ -1,9 +1,17 @@
-import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {
-  Diagram, NodeModel, ConnectorModel, SnapConstraints, SnapSettingsModel,
-  DataBinding, HierarchicalTree, DiagramTools
+  ConnectorModel,
+  DataBinding,
+  DataSourceModel,
+  Diagram,
+  DiagramTools,
+  HierarchicalTree,
+  NodeModel,
+  SnapConstraints,
+  SnapSettingsModel,
+  LayoutModel
 } from '@syncfusion/ej2-angular-diagrams';
-import { DataManager } from '@syncfusion/ej2-data';
+import {DataManager} from '@syncfusion/ej2-data';
 import * as Data from './diagram-data.json';
 
 export interface DataInfo {
@@ -18,43 +26,63 @@ Diagram.Inject(DataBinding, HierarchicalTree);
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent{
+export class AppComponent implements OnInit{
 
-  public nodeDefaults(node: NodeModel): NodeModel {
-    let obj: NodeModel = {};
-    obj.shape = { type: 'Basic', shape: 'Rectangle' };
-    obj.style = { strokeWidth: 1 };
-    obj.width = 95;
-    obj.height = 30;
-    return obj;
-  };
+  dataSource: DataSourceModel = {};
+  tool: any;
+  snapSettings: SnapSettingsModel = {};
+  layout: LayoutModel = {};
+  constructor() {
 
-  public data: Object = {
-    id: 'Name', parentId: 'Category', dataSource: new DataManager((Data as any).species),
-    //binds the external data with node
-    doBinding: (nodeModel: NodeModel, data: DataInfo, diagram: Diagram) => {
-      nodeModel.annotations = [{
-        /* tslint:disable:no-string-literal */
-        content: data['Name'],
-        style: { color: 'black' }
-      }
-      ];
-      /* tslint:disable:no-string-literal */
-      nodeModel.style = { fill: '#ffeec7', strokeColor: '#f5d897', strokeWidth: 1 };
-    }
-  };
+  }
 
-  public connDefaults(connector: ConnectorModel): void {
+  ngOnInit(): void {
+    this.dataSource = this.getDataSourceModel();
+    this.tool = DiagramTools.ZoomPan;
+    this.snapSettings = this.getSnapSettings();
+    this.layout = this.getLayoutConfig();
+  }
+
+  getDataSourceModel(): DataSourceModel {
+    const dataSourceObj: DataSourceModel = {};
+    dataSourceObj.id = 'Name';
+    dataSourceObj.parentId = 'Category';
+    dataSourceObj.dataSource = new DataManager((Data as any).species);
+    dataSourceObj.doBinding = (nodeModel: NodeModel, data: DataInfo, diagram: Diagram) => {
+      nodeModel.annotations = [{content: data.Name, style: {color: 'black'}}];
+      nodeModel.style = {fill: '#ffeec7', strokeColor: '#f5d897', strokeWidth: 1};
+    };
+    return dataSourceObj;
+  }
+
+  getConnectorDefaults(connector: ConnectorModel): void{
     connector.type = 'Orthogonal';
-    // connector.style.strokeColor = '#4d4d4d';
-    // connector.targetDecorator.shape = 'None';
-  };
+    connector.style = {strokeColor: '#4d4d4d'};
+    connector.targetDecorator = {shape: 'None'};
+  }
 
-  public tool: DiagramTools = DiagramTools.ZoomPan;
-  public snapSettings: SnapSettingsModel = { constraints: SnapConstraints.None };
-  public layout: Object = {
-    type: 'HierarchicalTree', horizontalSpacing: 40, verticalSpacing: 40,
-    margin: { top: 10, left: 10, right: 10, bottom: 0 }
-  };
+  nodeDefaults(node: NodeModel): NodeModel {
+    const nodeObject: NodeModel = {};
+    nodeObject.shape = {type: 'Basic', shape: 'Rectangle'};
+    nodeObject.style = {strokeWidth: 1};
+    nodeObject.width = 95;
+    nodeObject.height = 30;
+    return nodeObject;
+  }
+
+  getSnapSettings(): SnapSettingsModel{
+    const snapSettings: SnapSettingsModel = {};
+    snapSettings.constraints = SnapConstraints.None;
+    return snapSettings;
+  }
+
+  getLayoutConfig(): LayoutModel{
+    const layoutConfiq: LayoutModel = {};
+    layoutConfiq.type = 'HierarchicalTree';
+    layoutConfiq.horizontalSpacing = 40;
+    layoutConfiq.verticalSpacing = 40;
+    layoutConfiq.margin = { top: 10, left: 10, right: 10, bottom: 0 };
+    return layoutConfiq;
+  }
 }
 

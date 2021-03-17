@@ -1,8 +1,15 @@
 <div class="col-lg-8 control-section" style="width: 100%;">
   <div class="content-wrapper">
-    <ejs-diagram #diagram id="diagram" width="100%" height="490px" [getConnectorDefaults]='connDefaults'
+    <ejs-diagram #diagram
+                 id="diagram"
+                 [layout]='layout'
+                 [dataSourceSettings]='dataSource'
+                 [getConnectorDefaults]='getConnectorDefaults'
                  [getNodeDefaults]='nodeDefaults'
-                 [tool]='tool' [layout]='layout' [dataSourceSettings]='data' [snapSettings]='snapSettings'>
+                 [snapSettings]='snapSettings'
+                 [tool]='tool'
+                 height="500px"
+                 width="100%">
     </ejs-diagram>
   </div>
 </div>
